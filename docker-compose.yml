@@ -4,7 +4,6 @@ services:
   master:
     build: .
     image: mpilab:latest
-    container_name: mpilab_master
     # set user="root" to run mpi_bootstrap (which contains sshd service)
     user: root
     entrypoint: mpi_bootstrap role=master mpi_master_service_name=master mpi_worker_service_name=worker
@@ -18,7 +17,6 @@ services:
 
   worker:
     image: mpilab:latest
-    container_name: mpilab_worker
     # set user="root" to run mpi_bootstrap (which contains sshd service)
     user: root
     entrypoint: mpi_bootstrap role=worker mpi_master_service_name=master mpi_worker_service_name=worker
