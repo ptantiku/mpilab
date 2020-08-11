@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  master:
+    build: .
+    image: mpilab:latest
+    # set user="root" to run mpi_bootstrap (which contains sshd service)
+    user: root
+    entrypoint: mpi_bootstrap role=master mpi_master_service_name=master mpi_worker_service_name=worker
+    ports:
+      - "${SSH_PORT}:22"
+    volumes:
+      - $PWD/project/:/project/
+    networks:
+      - net
+
+  worker:
+    image: mpilab:latest
+    # set user="root" to run mpi_bootstrap (which contains sshd service)
+    user: root
+    entrypoint: mpi_bootstrap role=worker mpi_master_service_name=master mpi_worker_service_name=worker
+    volumes:
+      - $PWD/project/:/project/
+    depends_on:
+      - master
+    networks:
+      - net
+
+networks:
+  net:
